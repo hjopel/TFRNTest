@@ -30,7 +30,7 @@ const CAM_PREVIEW_WIDTH = Dimensions.get("window").width;
 const CAM_PREVIEW_HEIGHT = CAM_PREVIEW_WIDTH / (IS_IOS ? 9 / 16 : 3 / 4);
 
 // The score threshold for pose detection results.
-const MIN_KEYPOINT_SCORE = 0.3;
+const MIN_KEYPOINT_SCORE = 0.5;
 
 // The size of the resized output from TensorCamera.
 //
@@ -183,7 +183,7 @@ export default function App() {
         .map((k) => {
           // Flip horizontally on android or when using back camera on iOS.
           // const flipX = IS_ANDROID || cameraType === Camera.Constants.Type.back;
-          const flipX = true;
+          const flipX = true; // code above doesn't work correctly, if front it has to be flipped (on ios)
           const x = flipX ? getOutputTensorWidth() - k.x : k.x;
           const y = k.y;
           const cx =
@@ -245,14 +245,13 @@ export default function App() {
         onReady={handleCameraStream}
         autorender={false}
         rotation={getTextureRotationAngleInDegrees()}
-      >
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-        </View>
-      </TensorCamera>
+      />
       {renderPose()}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
+          <Text style={styles.text}>Flip Camera</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -263,14 +262,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   camera: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     zIndex: 1,
   },
   svg: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
+    width: "100%",
+    height: "100%",
+    position: "absolute",
     zIndex: 30,
   },
   buttonContainer: {
