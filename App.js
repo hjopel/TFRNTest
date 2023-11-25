@@ -68,12 +68,6 @@ export default function App() {
       // Wait for tfjs to initialize the backend.
       await tf.ready();
 
-      // Load movenet model.
-      // https://github.com/tensorflow/tfjs-models/tree/master/pose-detection
-      const movenetModelConfig = {
-        modelType: posedetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
-        enableSmoothing: true,
-      };
       // if (LOAD_MODEL_FROM_BUNDLE) {
       //   const modelJson = require('./offline_model/model.json');
       //   const modelWeights1 = require('./offline_model/group1-shard1of2.bin');
@@ -83,9 +77,24 @@ export default function App() {
       //     modelWeights2,
       //   ]);
       // }
+
+      // Load movenet model.
+      // https://github.com/tensorflow/tfjs-models/tree/master/pose-detection
+      // const movenetModelConfig = {
+      //   modelType: posedetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
+      //   enableSmoothing: true,
+      // };
+      // const movenetModel = await posedetection.createDetector(
+      //   posedetection.SupportedModels.MoveNet, // 17 landmarks
+      //   movenetModelConfig
+      // );
+
+      // https://www.npmjs.com/package/@tensorflow-models/pose-detection#pose-detection
       const model = await posedetection.createDetector(
-        posedetection.SupportedModels.MoveNet,
-        movenetModelConfig
+        posedetection.SupportedModels.BlazePose, // 50 (33 + 17) landmakrs
+        {
+          runtime: "tfjs", //can be tfjs or mediapipe, but mediapipe throws error
+        }
       );
       setModel(model);
 
