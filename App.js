@@ -2,6 +2,8 @@ import { Camera, CameraType } from "expo-camera";
 import { useState, useEffect } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as tf from '@tensorflow/tfjs';
+import '@tensorflow/tfjs-react-native';
 
 export default function App() {
   const [type, setType] = useState(CameraType.back);
@@ -9,10 +11,10 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      await AsyncStorage.setItem("test", "test");
-      const test = await AsyncStorage.getItem("test");
-      console.log(test);
+      await tf.ready();
+      console.log("TF ready");
     })();
+
   }, []);
 
   if (!permission) {
