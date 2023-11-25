@@ -1,53 +1,65 @@
-import React from 'react';
-import { View } from 'react-native';
-import { GLView } from 'expo-gl';
+import { Camera, CameraType } from 'expo-camera';
+import { useState } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
 export default function App() {
+  const [type, setType] = useState(CameraType.back);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+
+  if (!permission) {
+    // Camera permissions are still loading
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
+
+  function toggleCameraType() {
+    setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
+  }
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <GLView style={{ width: 300, height: 300 }} onContextCreate={onContextCreate} />
+    <View style={styles.container}>
+      <Camera style={styles.camera} type={type}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
+            <Text style={styles.text}>Flip Camera</Text>
+          </TouchableOpacity>
+        </View>
+      </Camera>
     </View>
   );
 }
 
-function onContextCreate(gl) {
-  gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-  gl.clearColor(0, 1, 1, 1);
-
-  // Create vertex shader (shape & position)
-  const vert = gl.createShader(gl.VERTEX_SHADER);
-  gl.shaderSource(
-    vert,
-    `
-    void main(void) {
-      gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
-      gl_PointSize = 150.0;
-    }
-  `
-  );
-  gl.compileShader(vert);
-
-  // Create fragment shader (color)
-  const frag = gl.createShader(gl.FRAGMENT_SHADER);
-  gl.shaderSource(
-    frag,
-    `
-    void main(void) {
-      gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-    }
-  `
-  );
-  gl.compileShader(frag);
-
-  // Link together into a program
-  const program = gl.createProgram();
-  gl.attachShader(program, vert);
-  gl.attachShader(program, frag);
-  gl.linkProgram(program);
-  gl.useProgram(program);
-
-  gl.clear(gl.COLOR_BUFFER_BIT);
-  gl.drawArrays(gl.POINTS, 0, 1);
-
-  gl.flush();
-  gl.endFrameEXP();
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  camera: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+});
