@@ -459,6 +459,13 @@ PODS:
   - RNSVG (13.9.0):
     - React-Core
   - SocketRocket (0.6.1)
+  - TensorFlowLiteC (2.14.0):
+    - TensorFlowLiteC/Core (= 2.14.0)
+  - TensorFlowLiteC/Core (2.14.0)
+  - TensorFlowLiteObjC (2.14.0):
+    - TensorFlowLiteObjC/Core (= 2.14.0)
+  - TensorFlowLiteObjC/Core (2.14.0):
+    - TensorFlowLiteC (= 2.14.0)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -515,6 +522,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNFS (from `../node_modules/react-native-fs`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - TensorFlowLiteObjC
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -522,6 +530,8 @@ SPEC REPOS:
     - fmt
     - libevent
     - SocketRocket
+    - TensorFlowLiteC
+    - TensorFlowLiteObjC
 
 EXTERNAL SOURCES:
   boost:
@@ -685,8 +695,10 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  TensorFlowLiteC: a836de9b6e6018665ccc349538bdd2c3b80dd7a5
+  TensorFlowLiteObjC: d2f4f4b543a733b0a3efb19904ffb1da267fa002
   Yoga: b76f1acfda8212aa16b7e26bcce3983230c82603
 
-PODFILE CHECKSUM: f7473b01f1324c394a328de6440b2808af814283
+PODFILE CHECKSUM: c909928094faa35f86f0107ca7f0e372ef1e9fe5
 
 COCOAPODS: 1.14.2
